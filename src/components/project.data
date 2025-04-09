@@ -1,0 +1,54 @@
+{
+      title: "E-Commerce Platform",
+      description: "A full-featured online store with payment processing, user accounts, and inventory management built with React, Node.js, and MongoDB.",
+      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2940&auto=format&fit=crop",
+      technologies: ["React", "Node.js", "MongoDB", "Stripe", "Redux"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "fullstack"
+    },
+    {
+      title: "Portfolio Website",
+      description: "The application focuses on helps individuals gain better control over their personal finances through tracking, budgeting, and goal-setting tools.",
+      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=2955&auto=format&fit=crop",
+      technologies: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "fullstack"
+    },
+    {
+      title: "Task Management App",
+      description: "A collaborative task management platform with real-time updates, notifications, and team collaboration features.",
+      image: "https://images.unsplash.com/photo-1565390802731-4baa47a7dd5f?q=80&w=2833&auto=format&fit=crop",
+      technologies: ["React", "Firebase", "Tailwind CSS", "Redux"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "fullstack"
+    },
+    {
+      title: "Fitness Tracker",
+      description: "A mobile application for tracking workouts, nutrition, and progress with data visualization and personalized recommendations.",
+      image: "https://images.unsplash.com/photo-1574482620811-1aa16ffe3c76?q=80&w=2940&auto=format&fit=crop",
+      technologies: ["React Native", "Node.js", "Express", "MongoDB"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "mobile"
+    },
+    {
+      title: "Weather Dashboard",
+      description: "A weather forecast application with interactive maps, real-time updates, and location-based services.",
+      image: "https://images.unsplash.com/photo-1534724364196-7b3944c80d9b?q=80&w=2952&auto=format&fit=crop",
+      technologies: ["React", "OpenWeather API", "ChartJS", "Tailwind CSS"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "frontend"
+    },
+    {
+      title: "Chat Application",
+      description: "A real-time messaging platform with features like group chats, file sharing, and end-to-end encryption.",
+      image: "https://images.unsplash.com/photo-1587825045755-fa51a0ba79fa?q=80&w=2938&auto=format&fit=crop",
+      technologies: ["React", "Socket.io", "Express", "MongoDB"],
+      demoLink: "#",
+      codeLink: "#",
+      category: "fullstack"
+    }

@@ -1,0 +1,194 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Lobster&family=Rowdies:wght@300;400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 287 86% 38%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 244 59% 50%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 338 81% 56%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+
+    --radius: 0.5rem;
+    
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-portfolio-dark text-white overflow-x-hidden;
+    background: linear-gradient(to bottom, #1a1a2e, #16213e);
+    background-attachment: fixed;
+  }
+  
+  a, button {
+    @apply cursor-none;
+  }
+  
+  h1, h2, h3 {
+    @apply font-cinzel;
+  }
+  
+  p {
+    @apply font-rowdies font-light;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-portfolio-accent via-portfolio-primary to-portfolio-light;
+  }
+  
+  .section {
+    @apply py-20 px-4 sm:px-6 md:px-8 lg:px-12 relative overflow-hidden;
+  }
+  
+  .card-effect {
+    @apply rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-xl hover:border-portfolio-accent/50 transition-all duration-300;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      @apply cursor-auto;
+    }
+    
+    a, button {
+      @apply cursor-auto;
+    }
+  }
+}
+
+@layer utilities {
+  .mask-radial {
+    mask-image: radial-gradient(circle at center, black 50%, transparent 100%);
+  }
+  
+  .tilt-card {
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    transition: transform 0.3s ease;
+  }
+  
+  .glass-effect {
+    @apply bg-white/5 backdrop-blur-md;
+  }
+  
+  .glow-effect {
+    box-shadow: 0 0 15px 2px rgba(247, 37, 133, 0.5);
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 15px 2px rgba(247, 37, 133, 0.5);
+  }
+  
+  .text-shadow {
+    text-shadow: 0 0 10px rgba(247, 37, 133, 0.7);
+  }
+  
+  .shine-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shine-effect::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(30deg);
+    animation: shine 6s linear infinite;
+  }
+  
+  /* Code Matrix rain effect */
+  .code-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(32, 193, 250, 0.05) 50%,
+      rgba(0, 0, 0, 0) 100%
+    ), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="3000" viewBox="0 0 200 1000"><g fill="%234CC9F0" opacity="0.6"><text x="10" y="40" font-family="monospace" font-size="14">01010101001011100101010</text><text x="50" y="80" font-family="monospace" font-size="14">10100101010010111001010</text><text x="30" y="120" font-family="monospace" font-size="14">01010100101110010101001</text><text x="70" y="160" font-family="monospace" font-size="14">10101001011100101010010</text><text x="10" y="200" font-family="monospace" font-size="14">01010010111001010100101</text><text x="30" y="240" font-family="monospace" font-size="14">01001011100101010010111</text><text x="60" y="280" font-family="monospace" font-size="14">01010100101110010101001</text><text x="10" y="320" font-family="monospace" font-size="14">10100101110010101001010</text><text x="40" y="360" font-family="monospace" font-size="14">01010010111001010100101</text><text x="20" y="400" font-family="monospace" font-size="14">01001011100101010010111</text><text x="50" y="440" font-family="monospace" font-size="14">01001011100101010010101</text><text x="30" y="480" font-family="monospace" font-size="14">10101001011100101010010</text><text x="60" y="520" font-family="monospace" font-size="14">10100101110010101001010</text><text x="25" y="560" font-family="monospace" font-size="14">11001010100101110010101</text><text x="55" y="600" font-family="monospace" font-size="14">10101001011100101010010</text><text x="15" y="640" font-family="monospace" font-size="14">01001011100101010010101</text><text x="45" y="680" font-family="monospace" font-size="14">10010111001010100101010</text><text x="35" y="720" font-family="monospace" font-size="14">01001011100101010010101</text><text x="65" y="760" font-family="monospace" font-size="14">10010111001010100101010</text><text x="25" y="800" font-family="monospace" font-size="14">10010111001010100101010</text><text x="55" y="840" font-family="monospace" font-size="14">01001011100101010010101</text><text x="35" y="880" font-family="monospace" font-size="14">10010111001010100101010</text><text x="15" y="920" font-family="monospace" font-size="14">01001011100101010010101</text><text x="45" y="960" font-family="monospace" font-size="14">10010111001010100101010</text></g></svg>');
+    animation: matrix-rain 20s linear infinite;
+  }
+  
+  @keyframes matrix-rain {
+    from {
+      background-position: 0% 0%;
+    }
+    to {
+      background-position: 0% 100%;
+    }
+  }
+  
+  @keyframes shine {
+    from {
+      transform: translateX(-100%) rotate(30deg);
+    }
+    to {
+      transform: translateX(100%) rotate(30deg);
+    }
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
