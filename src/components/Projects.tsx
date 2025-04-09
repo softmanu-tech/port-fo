@@ -1,7 +1,7 @@
 import { useRef, useState, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, Code, MonitorSmartphone } from "lucide-react";
-import { useProjects } from "../hooks/useProjects";
+import { useProjects } from "@/hooks/useProjects";
 
 const Projects = () => {
   const ref = useRef(null);

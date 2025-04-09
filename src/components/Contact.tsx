@@ -1,58 +1,79 @@
+"use client"
 
-import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import type React from "react"
+
+import { useRef, useState } from "react"
+import { motion, useInView } from "framer-motion"
+import { Mail, Phone, MapPin, Send } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 const Contact = () => {
-  const ref = useRef(null);
-  const formRef = useRef<HTMLFormElement>(null);
-  const isInView = useInView(ref, { once: false, amount: 0.2 });
+  const ref = useRef(null)
+  const {toast} = useToast()
+  const formRef = useRef<HTMLFormElement>(null)
+  const isInView = useInView(ref, { once: false, amount: 0.2 })
+
   const [formState, setFormState] = useState({
     name: "",
     email: "",
     subject: "",
-    message: ""
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+    message: "",
+  })
 
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
+
+  // Improved change handler to prevent typing disruptions
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormState({
-      ...formState,
-      [e.target.name]: e.target.value
-    });
-  };
+    // Clear any error messages when user starts typing again
+    if (submitError) setSubmitError(null)
+
+    const { name, value } = e.target
+
+    // Update state without causing re-renders that disrupt typing
+    setFormState((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-  
-    try {
-      const response = await fetch('/api/sendEmail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formState),
-      });
-  
-      if (response.ok) {
-        setSubmitSuccess(true);
-        setFormState({ name: "", email: "", subject: "", message: "" });
-  
-        setTimeout(() => {
-          setSubmitSuccess(false);
-        }, 3000);
-      } else {
-        throw new Error('Email sending failed');
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  
+    e.preventDefault()
+    setIsSubmitting(true)
 
-  
+    try {
+      // Send email using Resend
+     //await sendContactEmail(formState)
+     await fetch("http://localhost:8080/api/email/sendEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formState),
+      })
+
+      toast({
+        title: "Sent",
+        description: "Thank you for your message! I will get back to you soon.",
+        variant: "default",
+      })
+
+      //RESET FORM
+      setFormState({ name: "", email: "", subject: "", message: "" })
+      
+    } catch (error) {
+      console.error("Error Sending message",error)
+
+      toast({
+        title: "Error",
+        description: "There was a problem sending your message. Please try again later.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   const formVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -60,39 +81,47 @@ const Contact = () => {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6
-      }
-    }
-  };
+        duration: 0.6,
+      },
+    },
+  }
 
   const contactInfoItems = [
     {
       icon: <Mail className="text-portfolio-accent" size={24} />,
       title: "Email",
       value: "walelae86@gmail.com",
-      link: "mailto:walelae86@gmail.com"
+      link: "mailto:walelae86@gmail.com",
     },
     {
       icon: <Phone className="text-portfolio-accent" size={24} />,
       title: "Phone",
       value: "+254 (708) 904-996",
-      link: "tel:+254708904996"
+      link: "tel:+254708904996",
     },
     {
       icon: <MapPin className="text-portfolio-accent" size={24} />,
       title: "Location",
       value: "Nairobi, Kenya",
-      link: null
-    }
-  ];
+      link: null,
+    },
+  ]
 
-  const InputField = ({ type, name, placeholder, value, onChange, required = true }: {
-    type: string;
-    name: string;
-    placeholder: string;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    required?: boolean;
+  // Custom input component with optimized rendering
+  const InputField = ({
+    type,
+    name,
+    placeholder,
+    value,
+    onChange,
+    required = true,
+  }: {
+    type: string
+    name: string
+    placeholder: string
+    value: string
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    required?: boolean
   }) => (
     <div className="mb-4">
       <input
@@ -103,9 +132,10 @@ const Contact = () => {
         onChange={onChange}
         required={required}
         className="w-full p-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-portfolio-accent/50 font-rowdies font-light text-white transition-all"
+        aria-label={placeholder}
       />
     </div>
-  );
+  )
 
   return (
     <section id="contact" ref={ref} className="section bg-portfolio-dark/50">
@@ -131,7 +161,7 @@ const Contact = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <h3 className="text-2xl font-cinzel font-semibold mb-8">Contact Information</h3>
-            
+
             <div className="space-y-6 mb-8">
               {contactInfoItems.map((item, index) => (
                 <motion.div
@@ -158,11 +188,12 @@ const Contact = () => {
                 </motion.div>
               ))}
             </div>
-            
+
             <div className="card-effect p-6">
               <h4 className="text-xl font-cinzel font-semibold mb-4">Let's Connect</h4>
               <p className="text-gray-300 mb-6 font-rowdies font-light">
-                I'm currently available for freelance work and full-time positions. If you have a project that needs some creative touch, I'd love to hear about it.
+                I'm currently available for freelance work and full-time positions. If you have a project that needs
+                some creative touch, I'd love to hear about it.
               </p>
               <div className="flex gap-4">
                 <motion.a
@@ -174,7 +205,11 @@ const Contact = () => {
                   whileTap={{ scale: 0.9 }}
                 >
                   <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                    <path
+                      fillRule="evenodd"
+                      d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </motion.a>
                 <motion.a
@@ -212,35 +247,45 @@ const Contact = () => {
             animate={isInView ? "visible" : "hidden"}
           >
             <h3 className="text-2xl font-cinzel font-semibold mb-6">Send Me a Message</h3>
-            
-            <form ref={formRef} onSubmit={handleSubmit}>
+
+            <form ref={formRef} onSubmit={handleSubmit} noValidate>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <InputField
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  value={formState.name}
-                  onChange={handleChange}
-                />
-                <InputField
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  value={formState.email}
-                  onChange={handleChange}
-                />
+                <div className="mb-4 md:mb-0">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Your Name"
+                    value={formState.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-portfolio-accent/50 font-rowdies font-light text-white transition-all"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Your Email"
+                    value={formState.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-portfolio-accent/50 font-rowdies font-light text-white transition-all"
+                  />
+                </div>
               </div>
-              
+
               <div className="mb-4">
-                <InputField
+                <input
                   type="text"
                   name="subject"
                   placeholder="Subject"
                   value={formState.subject}
                   onChange={handleChange}
+                  required
+                  className="w-full p-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-portfolio-accent/50 font-rowdies font-light text-white transition-all"
                 />
               </div>
-              
+
               <div className="mb-6">
                 <textarea
                   name="message"
@@ -252,26 +297,57 @@ const Contact = () => {
                   className="w-full p-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-portfolio-accent/50 font-rowdies font-light text-white transition-all"
                 />
               </div>
-              
+
+              {submitError && (
+                <div className="mb-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-red-200 font-rowdies text-sm">
+                  {submitError}
+                </div>
+              )}
+
               <motion.button
                 type="submit"
-                className="px-8 py-3 bg-gradient-to-r from-portfolio-primary to-portfolio-secondary rounded-full font-rowdies text-white shadow-lg flex items-center gap-2"
+                className="px-8 py-3 bg-gradient-to-r from-portfolio-primary to-portfolio-secondary rounded-full font-rowdies text-white shadow-lg flex items-center gap-2 disabled:opacity-70"
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(114, 9, 183, 0.4)" }}
                 whileTap={{ scale: 0.95 }}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
                   <div className="flex items-center gap-2">
-                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Sending...
                   </div>
                 ) : submitSuccess ? (
                   <div className="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 text-white"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Message Sent!
                   </div>
@@ -287,7 +363,7 @@ const Contact = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact
