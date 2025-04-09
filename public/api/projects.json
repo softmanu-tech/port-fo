@@ -1,0 +1,22 @@
+[
+    {
+      "title": "E-Commerce Platform",
+      "description": "A full-featured online store...",
+      "image": "/images/agri.png",
+      "technologies": ["React", "Node.js", "MongoDB", "Stripe", "Redux"],
+      "demoLink": "#",
+      "codeLink": "#",
+      "category": "fullstack"
+    },
+    {
+      "title": "Portfolio Website",
+      "description": "Helps individuals gain control over their finances...",
+      "image": "/images/Air.png",
+      "technologies": ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
+      "demoLink": "#",
+      "codeLink": "#",
+      "category": "fullstack"
+    }
+    
+  ]
+  

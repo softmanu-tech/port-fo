@@ -1,73 +1,17 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { ExternalLink, Github, Code, MonitorSmartphone } from "lucide-react";
+import { useProjects } from "../hooks/useProjects";
 
 const Projects = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.1 });
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
   const [filter, setFilter] = useState("all");
-
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 3;
 
-  const projects = [
-    {
-      title: "E-Commerce Platform",
-      description: "A full-featured online store with payment processing, user accounts, and inventory management built with React, Node.js, and MongoDB.",
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2940&auto=format&fit=crop",
-      technologies: ["React", "Node.js", "MongoDB", "Stripe", "Redux"],
-      demoLink: "#",
-      codeLink: "#",
-      category: "fullstack"
-    },
-    {
-      title: "Portfolio Website",
-      description: "The application focuses on helps individuals gain better control over their personal finances through tracking, budgeting, and goal-setting tools.",
-      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=2955&auto=format&fit=crop",
-      technologies: ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
-      demoLink: "#",
-      codeLink: "#",
-      category: "fullstack"
-    },
-    {
-      title: "Task Management App",
-      description: "A collaborative task management platform with real-time updates, notifications, and team collaboration features.",
-      image: "https://images.unsplash.com/photo-1565390802731-4baa47a7dd5f?q=80&w=2833&auto=format&fit=crop",
-      technologies: ["React", "Firebase", "Tailwind CSS", "Redux"],
-      demoLink: "#",
-      codeLink: "#",
-      category: "fullstack"
-    },
-    {
-      title: "Fitness Tracker",
-      description: "A mobile application for tracking workouts, nutrition, and progress with data visualization and personalized recommendations.",
-      image: "https://images.unsplash.com/photo-1574482620811-1aa16ffe3c76?q=80&w=2940&auto=format&fit=crop",
-      technologies: ["React Native", "Node.js", "Express", "MongoDB"],
-      demoLink: "#",
-      codeLink: "#",
-      category: "mobile"
-    },
-    {
-      title: "Weather Dashboard",
-      description: "A weather forecast application with interactive maps, real-time updates, and location-based services.",
-      image: "https://images.unsplash.com/photo-1534724364196-7b3944c80d9b?q=80&w=2952&auto=format&fit=crop",
-      technologies: ["React", "OpenWeather API", "ChartJS", "Tailwind CSS"],
-      demoLink: "#",
-      codeLink: "#",
-      category: "frontend"
-    },
-    {
-      title: "Chat Application",
-      description: "A real-time messaging platform with features like group chats, file sharing, and end-to-end encryption.",
-      image: "https://images.unsplash.com/photo-1587825045755-fa51a0ba79fa?q=80&w=2938&auto=format&fit=crop",
-      technologies: ["React", "Socket.io", "Express", "MongoDB"],
-      demoLink: "#",
-      codeLink: "#",
-      category: "fullstack"
-    }
-
-  ];
+  const { data: projects = [], isLoading, error } = useProjects();
 
   const categories = [
     { id: "all", name: "All Projects" },
@@ -90,19 +34,21 @@ const Projects = () => {
     }
   };
 
-  const filteredProjects = filter === "all"
-    ? projects
-    : projects.filter((project) => project.category === filter);
+  const filteredProjects = useMemo(() => {
+    return filter === "all"
+      ? projects
+      : projects.filter((project) => project.category === filter);
+  }, [projects, filter]);
 
   const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
-  const paginatedProjects = filteredProjects.slice(
-    (currentPage - 1) * projectsPerPage,
-    currentPage * projectsPerPage
-  );
+
+  const paginatedProjects = useMemo(() => {
+    const start = (currentPage - 1) * projectsPerPage;
+    return filteredProjects.slice(start, start + projectsPerPage);
+  }, [filteredProjects, currentPage]);
 
   const handlePageChange = (page: number) => setCurrentPage(page);
 
-  // Reset to page 1 when filter changes
   const handleFilterChange = (newFilter: string) => {
     setFilter(newFilter);
     setCurrentPage(1);
@@ -147,73 +93,81 @@ const Projects = () => {
           ))}
         </motion.div>
 
+        {/* Loading/Error State */}
+        {isLoading && (
+          <p className="text-center text-white mb-12">Loading projects...</p>
+        )}
+        {error && (
+          <p className="text-center text-red-500 mb-12">Failed to load projects.</p>
+        )}
+
         {/* Projects */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence mode="wait">
-            {paginatedProjects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                className="card-effect overflow-hidden"
-                variants={fadeInUp}
-                initial="hidden"
-                animate={isInView ? "visible" : "hidden"}
-                exit="exit"
-                transition={{ delay: index * 0.1 }}
-                onMouseEnter={() => setHoveredProject(index)}
-                onMouseLeave={() => setHoveredProject(null)}
-                whileHover={{ y: -10 }}
-              >
-                {/* Image and overlay */}
-                <div className="relative aspect-video overflow-hidden">
-                  <motion.div
-                    className="absolute inset-0 bg-portfolio-dark/60 flex items-center justify-center opacity-0 transition-opacity"
-                    animate={{ opacity: hoveredProject === index ? 1 : 0 }}
-                  >
-                    <div className="flex gap-4">
-                      <motion.a href={project.demoLink} className="bg-portfolio-primary p-3 rounded-full text-white" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
-                        <ExternalLink size={20} />
-                      </motion.a>
-                      <motion.a href={project.codeLink} className="bg-portfolio-accent p-3 rounded-full text-white" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
-                        <Github size={20} />
-                      </motion.a>
-                    </div>
-                  </motion.div>
-                  <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
-                </div>
-
-                {/* Description */}
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-portfolio-accent">
-                      {project.category === "frontend" ? <Code size={18} /> :
-                        project.category === "mobile" ? <MonitorSmartphone size={18} /> :
-                          <Github size={18} />}
-                    </span>
-                    <span className="text-xs uppercase tracking-wider text-gray-400 font-rowdies">
-                      {project.category === "fullstack" ? "Full Stack" :
-                        project.category === "frontend" ? "Frontend" : "Mobile App"}
-                    </span>
+        {!isLoading && !error && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <AnimatePresence mode="wait">
+              {paginatedProjects.map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  className="card-effect overflow-hidden"
+                  variants={fadeInUp}
+                  initial="hidden"
+                  animate={isInView ? "visible" : "hidden"}
+                  exit="exit"
+                  transition={{ delay: index * 0.1 }}
+                  onMouseEnter={() => setHoveredProject(index)}
+                  onMouseLeave={() => setHoveredProject(null)}
+                  whileHover={{ y: -10 }}
+                >
+                  <div className="relative aspect-video overflow-hidden">
+                    <motion.div
+                      className="absolute inset-0 bg-portfolio-dark/60 flex items-center justify-center opacity-0 transition-opacity"
+                      animate={{ opacity: hoveredProject === index ? 1 : 0 }}
+                    >
+                      <div className="flex gap-4">
+                        <motion.a href={project.demoLink} className="bg-portfolio-primary p-3 rounded-full text-white" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
+                          <ExternalLink size={20} />
+                        </motion.a>
+                        <motion.a href={project.codeLink} className="bg-portfolio-accent p-3 rounded-full text-white" whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
+                          <Github size={20} />
+                        </motion.a>
+                      </div>
+                    </motion.div>
+                    <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
                   </div>
-                  <h3 className="text-xl font-cinzel font-bold mb-2">{project.title}</h3>
-                  <p className="text-gray-400 text-sm mb-4 font-rowdies font-light">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className="text-xs px-2 py-1 bg-white/5 rounded font-rowdies text-portfolio-light"
-                      >
-                        {tech}
+
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-portfolio-accent">
+                        {project.category === "frontend" ? <Code size={18} /> :
+                          project.category === "mobile" ? <MonitorSmartphone size={18} /> :
+                            <Github size={18} />}
                       </span>
-                    ))}
+                      <span className="text-xs uppercase tracking-wider text-gray-400 font-rowdies">
+                        {project.category === "fullstack" ? "Full Stack" :
+                          project.category === "frontend" ? "Frontend" : "Mobile App"}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-cinzel font-bold mb-2">{project.title}</h3>
+                    <p className="text-gray-400 text-sm mb-4 font-rowdies font-light">{project.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.map((tech, techIndex) => (
+                        <span
+                          key={techIndex}
+                          className="text-xs px-2 py-1 bg-white/5 rounded font-rowdies text-portfolio-light"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        )}
 
-        {/* Pagination Buttons */}
-        {totalPages > 1 && (
+        {/* Pagination */}
+        {totalPages > 1 && !isLoading && !error && (
           <div className="flex justify-center mt-12 space-x-2">
             {Array.from({ length: totalPages }, (_, i) => (
               <button
