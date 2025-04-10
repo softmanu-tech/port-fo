@@ -1,22 +1,124 @@
-[
+
+  [
     {
-      "title": "E-Commerce Platform",
-      "description": "A full-featured online store...",
+      "title": "News Room – Pulse News",
+      "description": "A modern news aggregation platform delivering real-time updates across global categories using the News API.",
+      "image": "/images/pulse.png",
+      "technologies": ["React", "Tailwind CSS", "News API"],
+      "demoLink": "https://pulse-news-sigma.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/Pulse-News.git",
+      "category": "frontend"
+    },
+    
+    {
+      "title": "Kenya AgriNexus",
+      "description": "A digital platform spotlighting innovative strategies to revolutionize Kenya’s agricultural sector and boost economic impact.",
       "image": "/images/agri.png",
-      "technologies": ["React", "Node.js", "MongoDB", "Stripe", "Redux"],
-      "demoLink": "#",
-      "codeLink": "#",
+      "technologies": ["Next.js", "Tailwind CSS"],
+      "demoLink": "https://agri-tech-kenya.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/AgriTech-Kenya.git",
+      "category": "frontend"
+    },
+    {
+      "title": "Kenya Motors",
+      "description": "A modern car rental booking system designed for premium experiences with smooth listings, reservations, and user management.",
+      "image": "/images/motors.png",
+      "technologies": ["React", "Tailwind CSS", "Node.js"],
+      "demoLink": "https://kenya-motors.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/kenya-motors.git",
+      "category": "frontend"
+    },
+    {
+      "title": "Kenya Railways",
+      "description": "A digital railway system supporting online ticketing, real-time train management, and commuter convenience.",
+      "image": "/images/kr.png",
+      "technologies": ["React", "Node.js", "Express"],
+      "demoLink": "https://kenya-railways-dfe7grfco-softmanu-techs-projects.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/kenya-railways.git",
       "category": "fullstack"
     },
     {
-      "title": "Portfolio Website",
-      "description": "Helps individuals gain control over their finances...",
+      "title": "Sanaa Market",
+      "description": "An e-commerce platform showcasing and selling handcrafted Kenyan goods to a global audience.",
+      "image": "/images/sanaa.png",
+      "technologies": ["React", "Tailwind CSS", "Framer Motion"],
+      "demoLink": "https://sanaa-market.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/Sanaa-Market.git",
+      "category": "fullstack"
+    },
+    {
+      "title": "Luxury Dental",
+      "description": "A professional dental management platform that simplifies appointments, patient records, and clinic workflows.",
+      "image": "/images/dental.png",
+      "technologies": ["React", "Node.js", "Express", "MongoDB"],
+      "demoLink": "https://dental-sys.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/dental-sys.git",
+      "category": "frontend"
+    },
+    {
+      "title": "Marketing System",
+      "description": "A full-featured marketing and client management system built to streamline campaigns, monitor performance metrics, and manage leads.",
+      "image": "/images/marketing.png",
+      "technologies": ["React", "Tailwind CSS", "Firebase"],
+      "demoLink": "https://marketing-system-gilt.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/Marketing-System.git",
+      "category": "fullstack"
+    },
+    
+    {
+      "title": "Advanced Airline Management System",
+      "description": "A robust airline system to manage flight schedules, reservations, and fleet details from one dashboard.",
       "image": "/images/Air.png",
-      "technologies": ["Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
-      "demoLink": "#",
-      "codeLink": "#",
+      "technologies": ["React", "Node.js", "Express", "PostgreSQL"],
+      "demoLink": "https://advanced-airline-management-system.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/Advanced-Airline-Management-System.git",
+      "category": "fullstack"
+    },
+    {
+      "title": "Mentor Match",
+      "description": "A mentorship matchmaking platform that bridges learners with industry experts through intelligent pairing.",
+      "image": "/images/mentor.png",
+      "technologies": ["React", "Node.js", "Express", "JWT"],
+      "demoLink": "https://mentor-match-xi.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/mentor-match.git",
+      "category": "fullstack"
+    },
+    {
+      "title": "CodeInterview",
+      "description": "A dynamic interview management platform that facilitates real-time technical assessments with live code execution and scoring.",
+      "image": "/images/ch.png",
+      "technologies": ["React", "Node.js", "Express", "CodeMirror", "JWT"],
+      "demoLink": "https://code-interview-silk.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/Code-Interview.git",
+      "category": "fullstack"
+    },
+    {
+      "title": "Techconnect Kenya",
+      "description": "A service booking platform connecting customers to certified tech repair providers across Kenya.",
+      "image": "/images/connect.png",
+      "technologies": ["React", "Tailwind CSS", "Node.js"],
+      "demoLink": "https://techconnect-kenya.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/Techconnect-Kenya.git/",
+      "category": "fullstack"
+    },
+    {
+      "title": "Grace Church Management",
+      "description": "A church management platform for handling events, members, sermons, and donation records.",
+      "image": "/images/grace.png",
+      "technologies": ["React", "Node.js", "MongoDB"],
+      "demoLink": "https://vibe-ch.vercel.app/login",
+      "codeLink": "https://github.com/softmanu-tech/vibe-ch.git",
+      "category": "fullstack"
+    },
+    {
+      "title": "Cinzel E-Library",
+      "description": "A digital library for academic institutions featuring book listings, borrowing logic, and reading progress tracking.",
+      "image": "/images/elib.png",
+      "technologies": ["React", "Node.js", "MongoDB"],
+      "demoLink": "https://e-library-o8or.vercel.app/",
+      "codeLink": "https://github.com/softmanu-tech/ELibrary.git",
       "category": "fullstack"
     }
-    
   ]
+  
   
